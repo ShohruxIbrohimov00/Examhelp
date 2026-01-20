@@ -2,24 +2,45 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shpargalka - Rus Tili</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Imtihon Shpargalka</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f4f4f9;
+            --bg-color: #f8fafc; /* Slate 50 */
+            --primary: #4f46e5; /* Indigo 600 */
+            --primary-soft: #e0e7ff; /* Indigo 100 */
+            --text-dark: #1e293b; /* Slate 800 */
+            --text-gray: #64748b; /* Slate 500 */
             --card-bg: #ffffff;
-            --primary: #007bff;
-            --text-main: #333;
-            --text-sec: #666;
-            --accent: #e7f3ff;
+            --success: #10b981; /* Emerald 500 */
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             margin: 0;
-            padding: 20px;
-            color: var(--text-main);
+            color: var(--text-dark);
+            padding-bottom: 40px;
+        }
+
+        /* Header & Search Area */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(248, 250, 252, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 20px 20px 10px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .container {
@@ -28,119 +49,160 @@
         }
 
         h1 {
+            font-size: 22px;
+            font-weight: 800;
             text-align: center;
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 24px;
+            margin: 0 0 15px 0;
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
-        .search-box {
-            position: sticky;
-            top: 10px;
-            background: var(--bg-color);
-            padding-bottom: 10px;
-            z-index: 100;
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+            pointer-events: none;
         }
 
         input {
             width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            box-sizing: border-box;
+            padding: 14px 14px 14px 48px;
+            font-size: 16px;
+            border: 2px solid transparent;
+            border-radius: 16px;
+            background: #ffffff;
+            color: var(--text-dark);
+            box-shadow: var(--shadow);
             outline: none;
-            transition: 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        input::placeholder {
+            color: #94a3b8;
         }
 
         input:focus {
             border-color: var(--primary);
-            box-shadow: 0 4px 10px rgba(0,123,255,0.2);
+            box-shadow: 0 0 0 4px var(--primary-soft);
         }
 
+        /* List Area */
         .result-list {
             list-style: none;
-            padding: 0;
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 600px;
         }
 
-        .item {
+        .card {
             background: var(--card-bg);
-            margin-bottom: 10px;
-            padding: 15px;
-            border-radius: 10px;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: slideUp 0.3s ease-out forwards;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            animation: fadeIn 0.3s ease;
         }
 
-        .code {
-            font-weight: 700;
-            font-size: 18px;
+        .code-badge {
+            background-color: var(--primary-soft);
             color: var(--primary);
-            background: var(--accent);
-            padding: 5px 10px;
-            border-radius: 6px;
-            margin-right: 10px;
-            white-space: nowrap;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+            font-family: monospace;
         }
 
-        .answer {
-            font-weight: 500;
+        .answer-text {
             font-size: 18px;
-            color: #28a745; /* Yashil rang javob uchun */
-            text-align: right;
-            word-break: break-word;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding-left: 4px;
         }
 
-        .empty-message {
+        .answer-text span {
+            color: var(--success);
+        }
+
+        .empty-state {
             text-align: center;
-            color: var(--text-sec);
-            margin-top: 20px;
+            padding: 40px 20px;
+            color: var(--text-gray);
             display: none;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Mobile optimization */
-        @media (max-width: 400px) {
-            .item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .answer {
-                text-align: left;
-                margin-top: 8px;
-                color: #333;
-                border-top: 1px solid #eee;
-                width: 100%;
-                padding-top: 8px;
-            }
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>📚 Shpargalka (Rus tili)</h1>
-    
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Savol kodini yozing (masalan: V.k.v...)">
+<div class="sticky-header">
+    <div class="container">
+        <h1>🔍 Rus Tili Shpargalka</h1>
+        <div class="search-wrapper">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="searchInput" placeholder="Savol kodini qidiring (masalan: V.k.v)..." autocomplete="off">
+        </div>
     </div>
-
-    <ul class="result-list" id="results">
-        <!-- Natijalar shu yerga chiqadi -->
-    </ul>
-    <div class="empty-message" id="emptyMsg">Hech narsa topilmadi 😕</div>
 </div>
 
+<div class="empty-state" id="emptyMsg">
+    <span class="empty-icon">🤔</span>
+    <p>Bunday kod topilmadi.<br>Boshqa narsa yozib ko'ring.</p>
+</div>
+
+<ul class="result-list" id="results">
+    <!-- Natijalar JS orqali chiqadi -->
+</ul>
+
 <script>
-    // MA'LUMOTLAR BAZASI
+    // MA'LUMOTLAR BAZASI (To'liq ro'yxat)
     const database = [
 {k: "А.И.Н.э", v: "Н.с"},
 {k: "А.и.Н.п", v: "в.к"},
@@ -518,15 +580,14 @@
         'e': 'э', 'yu': 'ю', 'ya': 'я', "'": 'ь', '"': 'ъ'
     };
 
-    // Yordamchi funksiya: Matnni tozalash va normallashtirish
+    // Yordamchi funksiya: Matnni tozalash
     function normalize(str) {
         return str.toLowerCase().replace(/[^a-zа-я0-9]/g, '');
     }
 
-    // Lotinchadan Kirillchaga o'girish funksiyasi
+    // Lotinchadan Kirillchaga o'girish
     function toCyrillic(str) {
         let res = str.toLowerCase();
-        // Murakkab harflarni avval almashtiramiz
         res = res.replace(/shch/g, 'щ')
                  .replace(/ch/g, 'ч')
                  .replace(/sh/g, 'ш')
@@ -534,9 +595,8 @@
                  .replace(/yu/g, 'ю')
                  .replace(/ya/g, 'я')
                  .replace(/ts/g, 'ц')
-                 .replace(/ye/g, 'е'); // ba'zan ye=е
+                 .replace(/ye/g, 'е');
 
-        // Qolgan harflar
         let out = '';
         for(let char of res) {
             out += latToCyr[char] || char;
@@ -556,12 +616,18 @@
         }
         emptyMsg.style.display = 'none';
 
-        items.forEach(item => {
+        items.forEach((item, index) => {
             const li = document.createElement('li');
-            li.className = 'item';
+            li.className = 'card';
+            li.style.animationDelay = `${index * 0.05}s`; // Kaskadli animatsiya
+            
             li.innerHTML = `
-                <span class="code">${item.k}</span>
-                <span class="answer">${item.v}</span>
+                <div class="card-header">
+                    <span class="code-badge">${item.k}</span>
+                </div>
+                <div class="answer-text">
+                    → <span>${item.v}</span>
+                </div>
             `;
             resultsList.appendChild(li);
         });
@@ -583,7 +649,6 @@
 
         const filtered = database.filter(item => {
             const cleanKey = normalize(item.k);
-            // Kiritilgan so'z to'g'ridan-to'g'ri mos tushadimi yoki transliteratsiya qilinganda mos tushadimi
             return cleanKey.includes(normalizedInput) || cleanKey.includes(cyrillicInput);
         });
 
